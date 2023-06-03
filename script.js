@@ -1,62 +1,11 @@
-// let addFormName = document.querySelector(".add-form-name"),
-// addFormText = document.querySelector(".add-form-text"),
-// addFormButton = document.querySelector(".add-form-button"),
-// comments = document.querySelector(".comments"),
-// comment = document.getElementsByTagName('li'),
-// deleteFormButton = document.querySelector(".delete-form-button"),
-// addForm = document.querySelector(".add-form"),
-// adding = document.querySelector(".adding"),
-// commentsLoading = document.querySelector(".comments-loading");
-let commentsLoading = document.querySelector(".comments-loading");
+import { fetchGet, commentos, fetchPost } from "./api.js";
+
+export let commentsLoading = document.querySelector(".comments-loading");
 
 
-let commentos = [];
 
-
-const host = 'https://wedev-api.sky.pro/api/v2/nikita-schenikov/comments';
-
-//  const token = "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k";
-
- let token = null;
-
-
-fetchGet = () => {
-  commentsLoading.style.display = "block";
-  fetch(host, {
-      method: "GET",
-      headers: {
-        Authorization: token,
-      }
-  })
-    .then((response) => {
-      if(response.status === 401) {
-        throw new Error("Нет авторизации");
-      }
-      return response.json();
-    })
-    .then((responseData) => {
-        const appComments = responseData.comments
-        .map((comment) => {
-          return {
-            name: comment.author.name,
-            date: new Date(Date.parse(comment.date)).toLocaleDateString() + ' ' + new Date(Date.parse(comment.date)).getHours() + ':' + new Date(Date.parse(comment.date)).getMinutes(),
-            text: comment.text,
-            likes: comment.likes,
-            isLiked: false,
-            id: comment.id,
-          };
-        });
-        return appComments;
-      })
-      .then((data) => {
-        commentsLoading.style.display = "none";
-        commentos = data;
-        renderApp();
-      });
-
-};
-
-
+let token = null;
+// let token = 'Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k';
 
 function delay(interval = 300) {
   return new Promise((resolve) => {
@@ -66,14 +15,8 @@ function delay(interval = 300) {
   });
 };
 
-
-
-
-
-initLikeButtonsListeners = () => {
+function initLikeButtonsListeners() {
   let likeButtonsElements = document.querySelectorAll('.like-button');
-
-  
 
   for(const likeButtonElement of likeButtonsElements) {
 
@@ -103,10 +46,11 @@ initLikeButtonsListeners = () => {
   
 };
 
-fetchGet();
+// fetchGet(token);
 
+// token = null;
 
-renderApp = () => {
+export function renderApp() {
 
   const appEl = document.getElementById("app");
 
@@ -136,14 +80,12 @@ renderApp = () => {
 
     document.getElementById('login-button').addEventListener('click', () => {
       token = "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k";
-      fetchGet();
+      fetchGet(token);
       renderApp();
     });
 
     return;
   }
-
-  
 
   const commentsHtml = commentos.map((comment, index) => {
 
@@ -203,10 +145,6 @@ renderApp = () => {
         </div>
       </div>`;
 
-
-
-  // let comments = document.querySelector(".comments");
-
   appEl.innerHTML = appHtml;
 
   let addFormName = document.querySelector(".add-form-name"),
@@ -255,12 +193,6 @@ renderApp = () => {
 
 renderApp();
 
-
-
-
-
-
-
 function clickable() {
 
   let addFormName = document.querySelector(".add-form-name"),
@@ -286,60 +218,62 @@ function clickable() {
     addForm.style.display = 'none';
     adding.style.display = 'block';
     
+        // fetch(host, {
+        //   method: "POST",
+        //   body: JSON.stringify({
+        //     name: addFormName.value,
+        //     text: addFormText.value,
+        //     // forceError: true,
+        //   }),
+        //   headers: {
+        //     Authorization: token,
+        //   }
+        // })
+        // .then((response) => {
+        //   if(response.status === 500) {
 
-        fetch(host, {
-          method: "POST",
-          body: JSON.stringify({
-            name: addFormName.value,
-            text: addFormText.value,
-            // forceError: true,
-          }),
-          headers: {
-            Authorization: token,
-          }
-        })
-        .then((response) => {
-          if(response.status === 500) {
+        //       alert('Сервер сломался, попробуй позже');
+        //       throw new Error("Ошибка сервера");
 
-              alert('Сервер сломался, попробуй позже');
-              throw new Error("Ошибка сервера");
+        //   } else if(response.status === 400) {
 
-          } else if(response.status === 400) {
-
-              alert('Имя и комментарий должны быть не короче 3 символов');
-              throw new Error("Неверный запрос");
+        //       alert('Имя и комментарий должны быть не короче 3 символов');
+        //       throw new Error("Неверный запрос");
             
-          } else {
-              return response.json();
-          } 
-        })
-        .then((responseData) => {
-            console.log(responseData);
-            fetchGet();
-            renderApp();
-        })
-        .then((data) => {
-          addForm.style.display = 'flex';
-          adding.style.display = 'none';
+        //   } else {
+        //       return response.json();
+        //   } 
+        // })
+        // .then((responseData) => {
+        //     console.log(responseData);
+        //     fetchGet(token);
+        //     renderApp();
+        // })
+        // .then((data) => {
+        //   addForm.style.display = 'flex';
+        //   adding.style.display = 'none';
 
-          addFormName.value = '';
-          addFormText.value = '';
+        //   addFormName.value = '';
+        //   addFormText.value = '';
+        //   addFormButton.classList.add('add-form-button-inactive');
+        // })
+        // .catch((error) => {
+
+        //   if(!navigator.onLine) {
+        //      alert('Кажется, у вас сломался интернет, попробуйте позже');
+        //   }
+
+        //   addForm.style.display = 'flex';
+        //   adding.style.display = 'none';
+
+        //   console.warn(error);
+        // });
+
+
+        // token = "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k";
+        fetchPost(addFormName.value, addFormText.value, addForm.style.display, adding.style.display, "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k", () => {
           addFormButton.classList.add('add-form-button-inactive');
-        })
-        .catch((error) => {
-
-          if(!navigator.onLine) {
-             alert('Кажется, у вас сломался интернет, попробуйте позже');
-          }
-
-          addForm.style.display = 'flex';
-          adding.style.display = 'none';
-
-          console.warn(error);
         });
-
-
-
 }
 
 
