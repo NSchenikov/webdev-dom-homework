@@ -1,4 +1,5 @@
 import { fetchGet, commentos, fetchPost } from "./api.js";
+import { renderLoginComponent } from "./components/login-component.js";
 
 export let commentsLoading = document.querySelector(".comments-loading");
 
@@ -46,42 +47,18 @@ function initLikeButtonsListeners() {
   
 };
 
-// fetchGet(token);
-
-// token = null;
-
 export function renderApp() {
 
   const appEl = document.getElementById("app");
 
   if(!token) {
-    const appHtml = `
-    <div class="container">
-    <div class="add-form">
-      <h3>Форма входа</h3>
-      <input
-        type="text"
-        id="login-input"
-        placeholder="Логин"
-      />
-      <br />
-      <input
-        type="text"
-        id="login-input"
-        placeholder="Пароль"
-      ></input>
-      <div class="">
-        <button id="login-button">Войти</button>
-      </div>
-    </div>
-  </div>`;
-
-    appEl.innerHTML = appHtml;
-
-    document.getElementById('login-button').addEventListener('click', () => {
-      token = "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k";
-      fetchGet(token);
-      renderApp();
+    
+    renderLoginComponent({ appEl, 
+      setToken: (newToken) => {
+      token = newToken;
+      },
+      fetchGet,
+      renderApp
     });
 
     return;
@@ -150,12 +127,12 @@ export function renderApp() {
   let addFormName = document.querySelector(".add-form-name"),
   addFormText = document.querySelector(".add-form-text"),
   addFormButton = document.querySelector(".add-form-button"),
-  comments = document.querySelector(".comments"),
-  comment = document.getElementsByTagName('li'),
-  deleteFormButton = document.querySelector(".delete-form-button"),
-  addForm = document.querySelector(".add-form"),
-  adding = document.querySelector(".adding"),
-  commentsLoading = document.querySelector(".comments-loading");
+  // comments = document.querySelector(".comments"),
+  // comment = document.getElementsByTagName('li'),
+  deleteFormButton = document.querySelector(".delete-form-button");
+  // addForm = document.querySelector(".add-form"),
+  // adding = document.querySelector(".adding"),
+  // commentsLoading = document.querySelector(".comments-loading");
   
   addFormButton.classList.add('add-form-button-inactive');
 
@@ -217,58 +194,6 @@ function clickable() {
 
     addForm.style.display = 'none';
     adding.style.display = 'block';
-    
-        // fetch(host, {
-        //   method: "POST",
-        //   body: JSON.stringify({
-        //     name: addFormName.value,
-        //     text: addFormText.value,
-        //     // forceError: true,
-        //   }),
-        //   headers: {
-        //     Authorization: token,
-        //   }
-        // })
-        // .then((response) => {
-        //   if(response.status === 500) {
-
-        //       alert('Сервер сломался, попробуй позже');
-        //       throw new Error("Ошибка сервера");
-
-        //   } else if(response.status === 400) {
-
-        //       alert('Имя и комментарий должны быть не короче 3 символов');
-        //       throw new Error("Неверный запрос");
-            
-        //   } else {
-        //       return response.json();
-        //   } 
-        // })
-        // .then((responseData) => {
-        //     console.log(responseData);
-        //     fetchGet(token);
-        //     renderApp();
-        // })
-        // .then((data) => {
-        //   addForm.style.display = 'flex';
-        //   adding.style.display = 'none';
-
-        //   addFormName.value = '';
-        //   addFormText.value = '';
-        //   addFormButton.classList.add('add-form-button-inactive');
-        // })
-        // .catch((error) => {
-
-        //   if(!navigator.onLine) {
-        //      alert('Кажется, у вас сломался интернет, попробуйте позже');
-        //   }
-
-        //   addForm.style.display = 'flex';
-        //   adding.style.display = 'none';
-
-        //   console.warn(error);
-        // });
-
 
         token = "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k";
 
