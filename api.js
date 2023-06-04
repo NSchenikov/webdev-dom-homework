@@ -4,7 +4,7 @@ export let commentos = [];
 
 const host = 'https://wedev-api.sky.pro/api/v2/nikita-schenikov/comments';
 
-let token = "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k";
+// let token = "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k";
 
 export function fetchGet({token}) {
     commentsLoading.style.display = "block";
@@ -41,7 +41,7 @@ export function fetchGet({token}) {
         });
   };
 
-  export function fetchPost({name, text, form, adding, token, callback}) {
+  export function fetchPost(name, text, form, adding, token, callback) {
     fetch(host, {
         method: "POST",
         body: JSON.stringify({
@@ -70,7 +70,7 @@ export function fetchGet({token}) {
       })
       .then((responseData) => {
           console.log(responseData);
-        //   fetchGet(token);
+          fetchGet(token);
           renderApp();
       })
       .then((data) => {

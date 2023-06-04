@@ -270,10 +270,19 @@ function clickable() {
         // });
 
 
-        // token = "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k";
-        fetchPost(addFormName.value, addFormText.value, addForm.style.display, adding.style.display, "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k", () => {
-          addFormButton.classList.add('add-form-button-inactive');
-        });
+        token = "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k";
+
+        fetchPost(
+          addFormName.value,
+          addFormText.value,
+          addForm.style.display,
+          adding.style.display,
+          token,
+          () => {
+            addFormButton.classList.add('add-form-button-inactive');
+          }
+        );
+        renderApp();
 }
 
 
