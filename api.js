@@ -95,7 +95,7 @@ export function fetchGet({token}) {
   // https://github.com/GlebkaF/webdev-hw-api/blob/main/pages/api/v2/%5Bkey%5D/comments/README.md
 
   export function loginUser({login, password}) {
-    fetch("https://wedev-api.sky.pro/api/user/login", {
+    return fetch("https://wedev-api.sky.pro/api/user/login", {
         method: "POST",
         body: JSON.stringify({
           login,

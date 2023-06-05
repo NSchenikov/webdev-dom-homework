@@ -31,7 +31,6 @@ export function renderLoginComponent({appEl, setToken, fetchGet, renderApp}) {
         password: "admin"
       })
       .then((user) => {
-        console.log(user);
         setToken(`Bearer ${user.user.token}`);
         fetchGet(`Bearer ${user.user.token}`);
         renderApp();
