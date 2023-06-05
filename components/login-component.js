@@ -1,4 +1,4 @@
-import { loginUser } from "../api.js";
+import { loginUser, registerUser } from "../api.js";
 
 export function renderLoginComponent({appEl, setToken, fetchGet, renderApp}) {
 
@@ -41,32 +41,67 @@ export function renderLoginComponent({appEl, setToken, fetchGet, renderApp}) {
       appEl.innerHTML = appHtml;
   
       document.getElementById('login-button').addEventListener('click', () => {
-  
-        const login = document.getElementById('login-input').value;
-        const password = document.getElementById('password-input').value;
-  
-        if(!login) {
-          alert('Введите логин');
-          return;
+
+        if(isLoginMode) {
+          const login = document.getElementById('login-input').value;
+          const password = document.getElementById('password-input').value;
+    
+          if(!login) {
+            alert('Введите логин');
+            return;
+          }
+    
+          if(!password) {
+            alert('Введите пароль');
+            return;
+          }
+    
+          loginUser({
+            login: login,
+            password: password
+          })
+          .then((user) => {
+            setToken(`Bearer ${user.user.token}`);
+            fetchGet(`Bearer ${user.user.token}`);
+            renderApp();
+          }).catch(error => {
+            //поработать над алертом
+            alert(error.message);
+          });
+        } else {
+          const login = document.getElementById('login-input').value;
+          const name = document.getElementById('name-input').value;
+          const password = document.getElementById('password-input').value;
+
+          if(!name) {
+            alert('Введите имя');
+            return;
+          }
+    
+          if(!login) {
+            alert('Введите логин');
+            return;
+          }
+    
+          if(!password) {
+            alert('Введите пароль');
+            return;
+          }
+    
+          registerUser({
+            login: login,
+            password: password,
+            name: name,
+          })
+          .then((user) => {
+            setToken(`Bearer ${user.user.token}`);
+            fetchGet(`Bearer ${user.user.token}`);
+            renderApp();
+          }).catch(error => {
+            //поработать над алертом
+            alert(error.message);
+          });
         }
-  
-        if(!password) {
-          alert('Введите пароль');
-          return;
-        }
-  
-        loginUser({
-          login: login,
-          password: password
-        })
-        .then((user) => {
-          setToken(`Bearer ${user.user.token}`);
-          fetchGet(`Bearer ${user.user.token}`);
-          renderApp();
-        }).catch(error => {
-          //поработать над алертом
-          alert(error.message);
-        });
       });
   
       document.querySelector(".register").addEventListener("click", () => {
