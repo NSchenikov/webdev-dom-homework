@@ -106,6 +106,9 @@ export function fetchGet({token}) {
         if(response.status === 400) {
           throw new Error('Такой пользователь уже существует');
         }
+        if(response.status === 500) {
+          throw new Error('Ошибка регистрации');
+        }
         return response.json();
       });
   }
@@ -120,6 +123,9 @@ export function fetchGet({token}) {
       }).then((response) => {
         if(response.status === 400) {
           throw new Error('Неверный логин или пароль');
+        }
+        if(response.status === 500) {
+          throw new Error('Ошибка авторизации');
         }
         return response.json();
       });
