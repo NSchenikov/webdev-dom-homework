@@ -97,6 +97,7 @@ export function renderLoginComponent({appEl, setToken, fetchGet, renderApp}) {
             name: name,
           })
           .then((user) => {
+            currentUser = user.user;
             setToken(`Bearer ${user.user.token}`);
             fetchGet(`Bearer ${user.user.token}`);
             renderApp();
