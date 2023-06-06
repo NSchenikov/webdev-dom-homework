@@ -4,6 +4,38 @@ export let commentos = [];
 
 const host = 'https://wedev-api.sky.pro/api/v2/nikita-schenikov/comments';
 
+export function fetchGetWithNoToken() {
+  // commentsLoading.style.display = "block";
+  fetch(host, {
+      method: "GET",
+  })
+    .then((response) => {
+      if(response.status === 401) {
+        throw new Error("Нет авторизации");
+      }
+      return response.json();
+    })
+    .then((responseData) => {
+        const appComments = responseData.comments
+        .map((comment) => {
+          return {
+            name: comment.author.name,
+            date: new Date(Date.parse(comment.date)).toLocaleDateString() + ' ' + new Date(Date.parse(comment.date)).getHours() + ':' + new Date(Date.parse(comment.date)).getMinutes(),
+            text: comment.text,
+            likes: comment.likes,
+            isLiked: false,
+            id: comment.id,
+          };
+        });
+        return appComments;
+      })
+      .then((data) => {
+        commentsLoading.style.display = "none";
+        commentos = data;
+        renderApp();
+      });
+};
+
 export function fetchGet({token}) {
     commentsLoading.style.display = "block";
     fetch(host, {
