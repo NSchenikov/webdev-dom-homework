@@ -1,5 +1,5 @@
 import { fetchGet, commentos, fetchPost, fetchGetWithNoToken } from "./api.js";
-import { renderLoginComponent } from "./components/login-component.js";
+import { renderLoginComponent, currentUser } from "./components/login-component.js";
 
 export let commentsLoading = document.querySelector(".comments-loading");
 
@@ -145,7 +145,8 @@ export function renderApp() {
               <input
                 type="text"
                 class="add-form-name"
-                placeholder="Введите ваше имя"
+                value='${currentUser.name}'
+                disabled
               />
               <textarea
                 type="textarea"
@@ -168,13 +169,10 @@ export function renderApp() {
       let addFormName = document.querySelector(".add-form-name"),
       addFormText = document.querySelector(".add-form-text"),
       addFormButton = document.querySelector(".add-form-button"),
-      // comments = document.querySelector(".comments"),
-      // comment = document.getElementsByTagName('li'),
       deleteFormButton = document.querySelector(".delete-form-button");
-      // addForm = document.querySelector(".add-form"),
-      // adding = document.querySelector(".adding"),
-      // commentsLoading = document.querySelector(".comments-loading");
-      
+
+      addFormName.value = currentUser.name;
+
       addFormButton.classList.add('add-form-button-inactive');
     
       initLikeButtonsListeners();
@@ -208,10 +206,6 @@ export function renderApp() {
         }
       });
     }
-      
-
-
-
 };
 
 renderApp();
@@ -240,8 +234,6 @@ function clickable() {
 
     addForm.style.display = 'none';
     adding.style.display = 'block';
-
-        token = "Bearer asb4c4boc86gasb4c4boc86g37w3cc3bo3b83k4g37k3bk3cg3c03ck4k";
 
         fetchPost(
           addFormName.value,

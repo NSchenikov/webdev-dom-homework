@@ -1,5 +1,7 @@
 import { loginUser, registerUser } from "../api.js";
 
+export let currentUser = {};
+
 export function renderLoginComponent({appEl, setToken, fetchGet, renderApp}) {
 
     let isLoginMode = true;
@@ -61,6 +63,7 @@ export function renderLoginComponent({appEl, setToken, fetchGet, renderApp}) {
             password: password
           })
           .then((user) => {
+            currentUser = user.user;
             setToken(`Bearer ${user.user.token}`);
             fetchGet(`Bearer ${user.user.token}`);
             renderApp();
